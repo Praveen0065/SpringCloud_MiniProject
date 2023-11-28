@@ -1,0 +1,30 @@
+package com.app.controller;
+
+import org.bouncycastle.oer.its.ieee1609dot2.basetypes.PublicEncryptionKey;
+import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+@RestController
+public class OrderController {
+	
+	private static final String exchange_service = "exchaneService";
+	
+	@CircuitBreaker(name = "exchange_service",fallbackMethod = "exchangeFallback")
+	public ResponseEntity<String> createOrder(){		
+		String response =
+				new RestTemplate().getForEntity("http://localhost:8001/currency-exchange/from/USD/to/OMR", String.class);
+		
+		return new ResponseEntity<String>(response,HttpStatus.OK);		
+		
+	}
+	
+	public ResponseEntity<String> exchangeFallback(Exception e){
+		return new ResponseEntity<String>("Currency Exchange Service is Down", HttpStatus.OK);
+	}
+
+}

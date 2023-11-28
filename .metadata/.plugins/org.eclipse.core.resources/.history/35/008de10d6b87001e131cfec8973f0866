@@ -1,0 +1,31 @@
+package com.app.controller2;
+
+import java.math.BigDecimal;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.bean1.ExchangeValue;
+
+@RestController
+public class CurrencyExchangeController {
+	
+	@Autowired
+	private Environment environment;
+	
+	@GetMapping("/currency-exchange/from/{from}/to/{to}")
+	public ExchangeValue retriveExchangaeValue(@PathVariable String from, @PathVariable String to ) {
+		//return new ExchangeValue(1000L,"USD","INR",BigDecimal.valueOf(70));
+		
+		ExchangeValue value = new ExchangeValue(1000L,"USD","INR",BigDecimal.valueOf(70));
+		value.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+		return value;
+	}
+	
+	
+
+
+}

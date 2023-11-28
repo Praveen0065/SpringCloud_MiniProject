@@ -1,0 +1,7 @@
+package com.app.service.impl;
+
+import com.app.service.IEmployeeService;
+
+public class EmployeeServiceImpl implements IEmployeeService {
+
+}
